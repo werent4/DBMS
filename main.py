@@ -21,8 +21,10 @@ class manage_db_Gui(Frame):
 
         self.row_list = Listbox()
         self.row_list.pack(fill=BOTH, expand=True)
+
         self.scrollbar = ttk.Scrollbar(orient="vertical", command=self.row_list.yview)
         self.scrollbar.pack(side=RIGHT, fill=Y)
+
         self.label = ttk.Label()
         self.label.pack()
 
@@ -32,7 +34,17 @@ class manage_db_Gui(Frame):
         self.execute_btn()
         self.connect_to_db()
 
+        # For table
+        '''self.columns = []
+        self.data = []
 
+        self.tree = ttk.Treeview(columns=self.columns, show="headings")
+        self.tree.pack(fill=BOTH, expand=1)
+
+        for i in range(0, len(self.columns)):
+            self.tree.heading(self.columns[i], text=f"{self.columns[i]}", anchor=W)
+
+            '''
     def initUI(self):
         # Title name
 
@@ -74,8 +86,7 @@ class manage_db_Gui(Frame):
         except Exception as e:
             self.label["text"] = f"The error '{e}' occurred"
             print(f"The error '{e}' occurred")
-
-
+#__________________________________________________________________
         self.row_list.delete(0,END)
 
 
@@ -83,7 +94,7 @@ class manage_db_Gui(Frame):
             self.row_list.insert(0, result_arr[i])
 
         self.row_list.insert(0, columns_names)
-
+#_________________________________________________________________
     def execute_btn(self):
         # Create execute Button to execute sql queries
 
