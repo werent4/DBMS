@@ -1,9 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
-import re
 
 from config import host, user, password, db_name
-
 class manage_db():
     col_names = []
 
@@ -22,6 +20,12 @@ class manage_db():
 
         return connection
 
+    def get_table_columns(self, connection, table_name):
+        query = f"SHOW COLUMNS FROM {table_name}"
+        cursor = connection.cursor()
+        cursor.execute(query)
+        columns = [column[0] for column in cursor.fetchall()]
+        return columns
 
     def execute_read_query(self, connection, query):
         cursor = connection.cursor()
@@ -32,37 +36,17 @@ class manage_db():
             return result
         except Error as e:
             print(f"The error '{e}' occurred")
-###############################################################
-    def get_col_names(self,connection, query):
 
-        col_names = []
 
-        table_name = re.findall("\w{3,};$", query)
-        #query = f"SHOW columns FROM '{table_name[0]}'"
-        cursor = connection.cursor()
-        col = None
-        try:
-            cursor.execute(f"SHOW columns FROM {table_name[0]}")
-            col = cursor.fetchall()
-            #return col
-        except Error as e:
-            print(f"The error '{e}' occurred")
-        for row in col:
-            col_names.append(row[0])
-        return col_names
-
-###############################################################
-    def output_query(self, result):
-        for row in result:
-            return row
 
 #SHOW columns FROM `staff_data`;
 
-#manager = manage_db()
-#connect = manager.create_connection(host, user, password, db_name[0])
-#query = str(input('query:'))
-#result = manager.get_col_names(connect, query)
-#col_names = []
-#for row in result:#
-    #col_names.append(row[0])
-#print(result)
+# manager = manage_db()
+# connect = manager.create_connection(host, user, password, db_name[1])
+# query = "select * from actor"#str(input('query:'))
+# table_name = query.split()
+# columns = manager.get_table_columns(connect, table_name[-1])
+# print(columns)
+# result = manager.execute_read_query(connect, query)
+# for row in result:
+#     print(row)
